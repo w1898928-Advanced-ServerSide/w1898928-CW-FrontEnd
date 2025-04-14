@@ -8,20 +8,12 @@ import AdminPanel from './pages/AdminPanel';
 import { checkAuth } from './services/authService';
 
 function App() {
-  
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    setIsAuthenticated(!!token);
-  }, []);
 
   return (
     <Router>
-      <NavBar isAuthenticated={isAuthenticated} />
+      <NavBar/>
       <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/login" element={<LoginPage setIsAuthenticated={setIsAuthenticated} />} />
+        <Route path="/" element={<LoginPage/>} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/admin" element={<AdminPanel />} />

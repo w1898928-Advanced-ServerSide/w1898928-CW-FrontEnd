@@ -1,22 +1,22 @@
 import { Link, useNavigate } from "react-router-dom";
 import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 import authService from "../services/authService";
+import { useAuth } from "../context/AuthContext";
 
-const NavBar = ({ isAuthenticated, setIsAuthenticated }) => {
-  // Add setIsAuthenticated to props
+const NavBar = () => {
   const navigate = useNavigate();
+  const { isAuthenticated, setIsAuthenticated, setUser } = useAuth();
 
-  const handleLogout = () => {
-    console.log("Logout initiated");
-    authService.logout();
-
-    // Update authentication state via prop function
-    if (setIsAuthenticated) {
+  const handleLogout = async () => {
+    try {
+      console.log("Logout initiated");
+      await authService.logout();
       setIsAuthenticated(false);
+      setUser(null);
+      navigate("/", { replace: true });
+    } catch (error) {
+      console.error("Logout failed:", error.message);
     }
-
-    navigate("/login", { replace: true });
-    window.location.reload(); // Ensures complete state reset
   };
 
   return (
@@ -40,7 +40,7 @@ const NavBar = ({ isAuthenticated, setIsAuthenticated }) => {
             </>
           ) : (
             <>
-              <Button color="inherit" component={Link} to="/login">
+              <Button color="inherit" component={Link} to="/">
                 Login
               </Button>
               <Button color="inherit" component={Link} to="/register">

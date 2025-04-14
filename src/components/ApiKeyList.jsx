@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Table,
   TableBody,
@@ -9,51 +9,29 @@ import {
   Paper,
   Button,
   Typography,
+  Tooltip,
+  IconButton,
+  Box,
 } from "@mui/material";
-import apiKeyService from "../services/apiKeyService";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import CheckIcon from "@mui/icons-material/Check";
+import { format } from "date-fns";
 
-const ApiKeyList = ({ userId }) => {
-  const [apiKeys, setApiKeys] = useState([]);
-  const [loading, setLoading] = useState(true);
+const ApiKeyList = ({ apiKeys, onUpdate }) => {
+  const [copiedKey, setCopiedKey] = useState(null);
 
-  useEffect(() => {
-    const fetchApiKeys = async () => {
-      try {
-        const response = await apiKeyService.getApiKeys(userId); 
-        setApiKeys(response.data);
-      } catch (error) {
-        console.error("Error fetching API keys:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const handleCopy = (key) => {
+    navigator.clipboard.writeText(key);
+    setCopiedKey(key);
 
-    fetchApiKeys();
-  }, [userId]);
-
-  const handleRevoke = async (apiId) => {
-    try {
-      await apiKeyService.revokeApiKey(apiId); 
-      setApiKeys(
-        apiKeys.map((key) =>
-          key.apiId === apiId ? { ...key, isActive: false } : key
-        )
-      );
-    } catch (error) {
-      console.error("Error revoking API key:", error);
-    }
+    setTimeout(() => {
+      setCopiedKey(null);
+    }, 1000);
   };
 
-  const handleDelete = async (apiId) => {
-    try {
-      await apiKeyService.deleteApiKey(apiId); // Updated call
-      setApiKeys(apiKeys.filter((key) => key.apiId !== apiId));
-    } catch (error) {
-      console.error("Error deleting API key:", error);
-    }
-  };
-
-  if (loading) return <Typography>Loading...</Typography>;
+  if (!apiKeys?.length) {
+    return <Typography>No API keys found.</Typography>;
+  }
 
   return (
     <TableContainer component={Paper}>
@@ -69,23 +47,49 @@ const ApiKeyList = ({ userId }) => {
         <TableBody>
           {apiKeys.map((key) => (
             <TableRow key={key.apiId}>
-              <TableCell>{key.apiKey.substring(0, 8)}...</TableCell>
+              <TableCell
+                sx={{
+                  fontFamily: "monospace",
+                  maxWidth: 400,
+                  wordBreak: "break-word",
+                }}
+              >
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  {key.apiKey}
+                  <Tooltip
+                    title={copiedKey === key.apiKey ? "Copied!" : "Copy"}
+                  >
+                    <IconButton
+                      size="small"
+                      onClick={() => handleCopy(key.apiKey)}
+                      sx={{ ml: 1 }}
+                    >
+                      {copiedKey === key.apiKey ? (
+                        <CheckIcon fontSize="small" />
+                      ) : (
+                        <ContentCopyIcon fontSize="small" />
+                      )}
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+              </TableCell>
+
               <TableCell>{key.isActive ? "Active" : "Revoked"}</TableCell>
               <TableCell>
-                {new Date(key.expiresAt).toLocaleDateString()}
+                {format(new Date(key.expiresAt), "yyyy-MM-dd")}
               </TableCell>
               <TableCell>
                 {key.isActive && (
                   <Button
                     color="warning"
-                    onClick={() => handleRevoke(key.apiId)}
+                    onClick={() => onUpdate("revoke", key.apiId)}
                   >
                     Revoke
                   </Button>
                 )}
                 <Button
                   color="error"
-                  onClick={() => handleDelete(key.apiId)}
+                  onClick={() => onUpdate("delete", key.apiId)}
                   sx={{ ml: 1 }}
                 >
                   Delete

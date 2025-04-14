@@ -2,19 +2,33 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, TextField, Button, Typography, Alert } from "@mui/material";
 import authService from "../services/authService";
+import { useAuth } from "../context/AuthContext";
 
-const LoginPage = ({ setIsAuthenticated }) => {
+const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
   const navigate = useNavigate();
+  const { setUser, setIsAuthenticated } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
     try {
+      // 1. Perform login
       await authService.login(username, password);
+
+      // 2. Fetch session user
+      const currentUser = await authService.getCurrentUser();
+
+      // 3. Update context
+      setUser(currentUser);
       setIsAuthenticated(true);
-      navigate("/");
+
+      // 4. Navigate
+      navigate("/dashboard");
     } catch (err) {
       setError(
         err.response?.data?.message || "Login failed. Please try again."
@@ -62,4 +76,4 @@ const LoginPage = ({ setIsAuthenticated }) => {
   );
 };
 
-export default LoginPage;
+export default Login;

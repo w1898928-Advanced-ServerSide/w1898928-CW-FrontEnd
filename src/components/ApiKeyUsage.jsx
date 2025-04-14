@@ -1,4 +1,4 @@
-import { Typography, Paper, Box, Alert, Button } from "@mui/material"; 
+import { Typography, Paper, Box, Alert, Button } from "@mui/material";
 import { useState } from "react";
 
 const ApiKeyUsage = ({ apiKey }) => {

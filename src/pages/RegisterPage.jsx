@@ -1,32 +1,29 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, TextField, Button, Typography, Alert } from "@mui/material";
-import authService from "../services/authService"; 
+import authService from "../services/authService";
 
-const RegisterPage = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
+const Register = () => {
   const navigate = useNavigate();
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting:", { username, email, password, confirmPassword });
-
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
+    setError("");
+    setSuccess("");
 
     try {
-      await authService.register(username, password, email); // Updated call
-      navigate("/login");
+      const response = await authService.register(username, password, email);
+      setSuccess("Registration successful! Redirecting to login...");
+      setTimeout(() => navigate("/"), 1500); // ⏳ redirect after 1.5s
     } catch (err) {
-      setError(
-        err.response?.data?.message || "Registration failed. Please try again."
-      );
+      console.error("Registration failed:", err);
+      setError(err.response?.data?.message || "Failed to register.");
     }
   };
 
@@ -36,11 +33,8 @@ const RegisterPage = () => {
         Register
       </Typography>
 
-      {error && (
-        <Alert severity="error" sx={{ mb: 2 }}>
-          {error}
-        </Alert>
-      )}
+      {error && <Alert severity="error">{error}</Alert>}
+      {success && <Alert severity="success">{success}</Alert>}
 
       <form onSubmit={handleSubmit}>
         <TextField
@@ -54,9 +48,9 @@ const RegisterPage = () => {
 
         <TextField
           label="Email"
-          type="email"
           fullWidth
           margin="normal"
+          type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -72,16 +66,6 @@ const RegisterPage = () => {
           required
         />
 
-        <TextField
-          label="Confirm Password"
-          type="password"
-          fullWidth
-          margin="normal"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-        />
-
         <Button type="submit" variant="contained" fullWidth sx={{ mt: 3 }}>
           Register
         </Button>
@@ -90,4 +74,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default Register;
