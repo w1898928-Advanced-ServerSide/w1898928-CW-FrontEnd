@@ -21,6 +21,8 @@ const authService = {
   logout: () => {
     localStorage.removeItem('token');
     localStorage.removeItem('apiKey');
+    localStorage.removeItem('userId'); 
+  console.log('LocalStorage cleared');
   }
 };
 

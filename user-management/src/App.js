@@ -23,6 +23,7 @@ function App() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/login" element={<LoginPage setIsAuthenticated={setIsAuthenticated} />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/admin" element={<AdminPanel />} />
       </Routes>
     </Router>

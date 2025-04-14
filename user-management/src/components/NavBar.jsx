@@ -1,13 +1,22 @@
 import { Link, useNavigate } from "react-router-dom";
 import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
-import authService from "../services/authService"; // Changed to default import
+import authService from "../services/authService";
 
-const NavBar = ({ isAuthenticated }) => {
+const NavBar = ({ isAuthenticated, setIsAuthenticated }) => {
+  // Add setIsAuthenticated to props
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    authService.logout(); // Now calling logout through the authService object
-    navigate("/login");
+    console.log("Logout initiated");
+    authService.logout();
+
+    // Update authentication state via prop function
+    if (setIsAuthenticated) {
+      setIsAuthenticated(false);
+    }
+
+    navigate("/login", { replace: true });
+    window.location.reload(); // Ensures complete state reset
   };
 
   return (
@@ -19,7 +28,7 @@ const NavBar = ({ isAuthenticated }) => {
         <Box sx={{ display: "flex", gap: 2 }}>
           {isAuthenticated ? (
             <>
-              <Button color="inherit" component={Link} to="/">
+              <Button color="inherit" component={Link} to="/dashboard">
                 Dashboard
               </Button>
               <Button color="inherit" component={Link} to="/admin">

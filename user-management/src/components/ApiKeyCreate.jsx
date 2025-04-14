@@ -10,13 +10,17 @@ const ApiKeyCreate = ({ userId, onKeyCreated }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log("Attempting to create API key for user:", userId); 
       const response = await apiKeyService.createApiKey(userId, expiresInDays);
+      console.log("Creation response:", response); 
       onKeyCreated(response.data);
-      setSuccess("API key created successfully!");
-      setError("");
     } catch (err) {
+      console.error("Detailed error:", {
+        message: err.message,
+        response: err.response,
+        stack: err.stack,
+      });
       setError(err.response?.data?.message || "Failed to create API key");
-      setSuccess("");
     }
   };
 
