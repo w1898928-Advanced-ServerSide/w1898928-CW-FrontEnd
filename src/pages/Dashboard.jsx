@@ -3,7 +3,7 @@ import { Container, Typography, Box } from "@mui/material";
 import ApiKeyCreate from "../components/ApiKeyCreate";
 import ApiKeyList from "../components/ApiKeyList";
 import ApiKeyUsage from "../components/ApiKeyUsage";
-import apiKeyService from "../services/apiKeyService"; // Changed to default import
+import apiKeyService from "../services/apiKeyService"; 
 
 const Dashboard = () => {
   const [apiKeys, setApiKeys] = useState([]);
@@ -13,7 +13,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchApiKeys = async () => {
       try {
-        const response = await apiKeyService.getApiKeys(userId); // Updated call
+        const response = await apiKeyService.getApiKeys(userId);
         setApiKeys(response.data);
       } catch (error) {
         console.error("Error fetching API keys:", error);

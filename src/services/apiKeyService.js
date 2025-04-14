@@ -1,13 +1,8 @@
 import api from './api';
 
 const apiKeyService = {
-  /**
-   * Creates a new API key for the user
-   * @param {string|number} userId - The user's ID
-   * @param {number} [expiresInDays=30] - Expiration in days
-   * @returns {Promise<Object>} API key data
-   * @throws {Error} If request fails
-   */
+  
+  //Creates a new API key for the user
   createApiKey: async (userId, expiresInDays = 30) => {
     try {
       if (!userId) {
@@ -36,12 +31,7 @@ const apiKeyService = {
     }
   },
 
-  /**
-   * Gets all API keys for a user
-   * @param {string|number} userId - The user's ID
-   * @returns {Promise<Array>} List of API keys
-   * @throws {Error} If request fails
-   */
+  //Gets all API keys for a user
   getApiKeys: async (userId) => {
     try {
       if (!userId) {
@@ -61,12 +51,7 @@ const apiKeyService = {
     }
   },
 
-  /**
-   * Revokes an API key
-   * @param {string|number} apiId - The API key ID
-   * @returns {Promise<Object>} Operation result
-   * @throws {Error} If request fails
-   */
+  //Revokes an API key
   revokeApiKey: async (apiId) => {
     try {
       if (!apiId) {
@@ -89,13 +74,8 @@ const apiKeyService = {
       throw new Error(error.response?.data?.message || 'Failed to revoke API key');
     }
   },
-
-  /**
-   * Deletes an API key
-   * @param {string|number} apiId - The API key ID
-   * @returns {Promise<Object>} Operation result
-   * @throws {Error} If request fails
-   */
+  
+  //Deletes an API key
   deleteApiKey: async (apiId) => {
     try {
       if (!apiId) {

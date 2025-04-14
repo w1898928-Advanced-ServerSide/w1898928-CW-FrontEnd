@@ -1,11 +1,8 @@
 import api from './api';
 import { UserDto } from '../dto/userDto';
 
-/**
- * Fetches all users from the API
- * @returns {Promise<UserDto[]>} Array of UserDto objects
- * @throws {Error} When API request fails
- */
+
+//Fetches all users from the API 
 export const getUsers = async () => {
   try {
     const response = await api.get('/auth/users');
@@ -29,12 +26,8 @@ export const getUsers = async () => {
   }
 };
 
-/**
- * Fetches a single user by ID
- * @param {string|number} id - User ID
- * @returns {Promise<UserDto>} UserDto object
- * @throws {Error} When user not found or API request fails
- */
+
+//Fetches a single user by ID
 export const getUserById = async (id) => {
   try {
     if (!id) {
@@ -59,10 +52,6 @@ export const getUserById = async (id) => {
     throw new Error(error.response?.data?.message || 'Failed to fetch user');
   }
 };
-
-/**
- * Additional useful methods you might want to add:
- */
 
 // Create a new user
 export const createUser = async (userData) => {

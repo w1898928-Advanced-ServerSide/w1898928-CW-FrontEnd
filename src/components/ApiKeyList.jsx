@@ -10,7 +10,7 @@ import {
   Button,
   Typography,
 } from "@mui/material";
-import apiKeyService from "../services/apiKeyService"; // Changed to default import
+import apiKeyService from "../services/apiKeyService";
 
 const ApiKeyList = ({ userId }) => {
   const [apiKeys, setApiKeys] = useState([]);
@@ -19,7 +19,7 @@ const ApiKeyList = ({ userId }) => {
   useEffect(() => {
     const fetchApiKeys = async () => {
       try {
-        const response = await apiKeyService.getApiKeys(userId); // Updated call
+        const response = await apiKeyService.getApiKeys(userId); 
         setApiKeys(response.data);
       } catch (error) {
         console.error("Error fetching API keys:", error);
@@ -33,7 +33,7 @@ const ApiKeyList = ({ userId }) => {
 
   const handleRevoke = async (apiId) => {
     try {
-      await apiKeyService.revokeApiKey(apiId); // Updated call
+      await apiKeyService.revokeApiKey(apiId); 
       setApiKeys(
         apiKeys.map((key) =>
           key.apiId === apiId ? { ...key, isActive: false } : key

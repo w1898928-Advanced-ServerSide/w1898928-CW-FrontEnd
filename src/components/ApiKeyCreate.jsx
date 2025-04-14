@@ -9,6 +9,7 @@ const ApiKeyCreate = ({ userId, onKeyCreated }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Submitting with:", { userId, expiresInDays });
     try {
       console.log("Attempting to create API key for user:", userId); 
       const response = await apiKeyService.createApiKey(userId, expiresInDays);

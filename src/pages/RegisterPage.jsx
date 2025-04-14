@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, TextField, Button, Typography, Alert } from "@mui/material";
-import authService from "../services/authService"; // Changed to default import
+import authService from "../services/authService"; 
 
 const RegisterPage = () => {
   const [username, setUsername] = useState("");

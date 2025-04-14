@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const AdminPanel = () => {
   const navigate = useNavigate();
-  const isAdmin = localStorage.getItem("role") === "admin"; // Set role during login
+  const isAdmin = localStorage.getItem("role") === "admin";
 
   return (
     <Container maxWidth="lg">
