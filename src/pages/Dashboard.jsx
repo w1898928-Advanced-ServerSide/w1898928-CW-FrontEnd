@@ -60,7 +60,7 @@ const Dashboard = () => {
   };
 
   //Loading state render
-  if (loading || apiLoading) {
+  if (loading || apiLoading || !user) {
     return (
       <Container maxWidth="md" sx={{ textAlign: "center", mt: 4 }}>
         <CircularProgress />
