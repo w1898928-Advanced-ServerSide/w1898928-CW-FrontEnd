@@ -9,5 +9,6 @@ COPY ./package.json /app
 RUN npm install 
 
 COPY . .
+Run npm install
 
 CMD npm start
