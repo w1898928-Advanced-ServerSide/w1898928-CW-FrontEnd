@@ -14,12 +14,14 @@ const Dashboard = () => {
   const [apiLoading, setApiLoading] = useState(true);
   const navigate = useNavigate();
 
+  //Effect to redirect unauthenticated users to the login page
   useEffect(() => {
     if (!loading && !user) {
       navigate("/");
     }
   }, [user, loading, navigate]);
 
+  //Fetches API keys for the current user
   const fetchApiKeys = async () => {
     try {
       if (user && user.userId) {
@@ -33,17 +35,20 @@ const Dashboard = () => {
     }
   };
 
+  //Effect to load API keys when user data is available
   useEffect(() => {
     if (user && user.userId) {
       fetchApiKeys();
     }
   }, [user]);
 
+  //Handles new key creation
   const handleKeyCreated = (newKey) => {
     setCurrentKey(newKey.apiKey);
     fetchApiKeys();
   };
 
+  //Handles key updates (revoke/delete)
   const handleKeyUpdate = async (action, apiId) => {
     try {
       if (action === "revoke") await apiKeyService.revokeApiKey(apiId);
@@ -54,6 +59,7 @@ const Dashboard = () => {
     }
   };
 
+  //Loading state render
   if (loading || apiLoading) {
     return (
       <Container maxWidth="md" sx={{ textAlign: "center", mt: 4 }}>

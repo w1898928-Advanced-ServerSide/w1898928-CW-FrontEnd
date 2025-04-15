@@ -2,6 +2,7 @@ import api from './api';
 import { ApiKeyDto } from '../dto/apiKeyDto';
 
 const apiKeyService = {
+  // make POST request to create API key endpoint
   createApiKey: async (userId, expiresInDays = 30) => {
     const response = await api.post(
       '/apiKey',
@@ -9,6 +10,7 @@ const apiKeyService = {
       { withCredentials: true }
     );
 
+    //validate response structure
     if (!response.data?.data?.apiKey) {
       throw new Error('Invalid API key response format');
     }
@@ -16,6 +18,7 @@ const apiKeyService = {
     return new ApiKeyDto(response.data.data);
   },
 
+  //Get all API keys for a user
   getApiKeys: async (userId) => {
     const response = await api.get(`/apiKey?userId=${userId}`, {
       withCredentials: true,
@@ -25,6 +28,7 @@ const apiKeyService = {
     return rawList.map((item) => new ApiKeyDto(item));
   },
 
+  //Revoke an API key
   revokeApiKey: async (apiId) => {
     const response = await api.patch(
       `/apiKey/${apiId}/revoke`,
@@ -34,6 +38,7 @@ const apiKeyService = {
     return response.data;
   },
 
+  //Delete an API key
   deleteApiKey: async (apiId) => {
     const response = await api.delete(`/apiKey/${apiId}`, {
       withCredentials: true,

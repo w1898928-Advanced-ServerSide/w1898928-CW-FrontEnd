@@ -17,19 +17,20 @@ const Login = () => {
     setError("");
 
     try {
-      // 1. Perform login
+      //Perform login
       await authService.login(username, password);
 
-      // 2. Fetch session user
+      //Fetch session user
       const currentUser = await authService.getCurrentUser();
 
-      // 3. Update context
+      //Update context
       setUser(currentUser);
       setIsAuthenticated(true);
 
-      // 4. Navigate
+      //Redirect to dashboard
       navigate("/dashboard");
     } catch (err) {
+      //Handle errors - use server message or fallback
       setError(
         err.response?.data?.message || "Login failed. Please try again."
       );
@@ -42,6 +43,7 @@ const Login = () => {
         Login
       </Typography>
 
+      {/* Error display - only shows when error exists */}
       {error && (
         <Alert severity="error" sx={{ mb: 2 }}>
           {error}

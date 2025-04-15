@@ -17,7 +17,7 @@ export const getUsers = async () => {
         user.username,
         user.email,
         user.createdAt,
-        user.updatedAt // Added optional field
+        user.updatedAt 
       )
     );
   } catch (error) {
@@ -45,7 +45,7 @@ export const getUserById = async (id) => {
       response.data.username,
       response.data.email,
       response.data.createdAt,
-      response.data.updatedAt // Added optional field
+      response.data.updatedAt 
     );
   } catch (error) {
     console.error(`Error fetching user ${id}:`, error);
@@ -53,7 +53,7 @@ export const getUserById = async (id) => {
   }
 };
 
-// Create a new user
+//Create a new user
 export const createUser = async (userData) => {
   try {
     const response = await api.post('/auth/users', userData);
@@ -86,7 +86,7 @@ export const updateUser = async (id, updateData) => {
   }
 };
 
-// Delete user
+//Delete user
 export const deleteUser = async (id) => {
   try {
     await api.delete(`/auth/users/${id}`);

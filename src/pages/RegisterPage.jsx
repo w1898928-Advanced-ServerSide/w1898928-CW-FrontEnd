@@ -20,7 +20,7 @@ const Register = () => {
     try {
       const response = await authService.register(username, password, email);
       setSuccess("Registration successful! Redirecting to login...");
-      setTimeout(() => navigate("/"), 1500); // ⏳ redirect after 1.5s
+      setTimeout(() => navigate("/"), 1500);
     } catch (err) {
       console.error("Registration failed:", err);
       setError(err.response?.data?.message || "Failed to register.");
